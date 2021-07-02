@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+/*
+  NewOrganisation(t).OfType(ORG_TYPE_COOP).Named("TestCorp").WithSharePrice(3.24).WithEmployees(
+    NewEmployee(t)...
+  )
+ */
+message Organisation {
+  OrgType type = 1;
+  string name = 2;
+  optional float share_price = 3;
+  repeated Employee employees = 4;
+}
+
+enum OrgType {
+  ORG_TYPE_UNSPECIFIED = 0;
+  ORG_TYPE_COOP = 1;
+  ORG_TYPE_NGO = 2;
+  ORG_TYPE_CORP = 3;
+}
+
+/*
+  NewEmployee(t).WithDetails(NewPerson(t)...).AtLocation(NewLocation(t)...).WithResume(...).WithPet(NewCat || NewDog...)
+ */
+message Employee {
+  Person details = 1;
+  Location location = 2;
+  google.protobuf.Any resume = 3; // expecting this to be interface{}
+  oneof pet {
+    Cat cat = 10;
+    Dog dog = 11;
+  };
+}
+
+/*
+  NewPerson(t).Named("Bob").Aged(42).WithAddress("123 Builder rd").WithEmail("bob@builders.com")
+ */
+message Person {
+  string name = 1;
+  uint32 age = 2;
+  optional string address = 3;
+  optional string email = 4;
+}
+
+/*
+  NewLocation(t, -22, 32)
+ */
+message Location {
+  int32 long = 1;
+  int32 lat = 2;
+}
+
+/*
+  NewCat(t).Named("Tom").OfBreed(BREED_SHORT_HAIR)
+ */
+message Cat {
+  enum Breed {
+    BREED_UNSPECIFIED = 0;
+    BREED_SHORT_HAIR = 1;
+    BREED_LONG_HAIR = 2;
+  }
+
+  string name = 1;
+  Breed breed = 2;
+}
+
+/*
+  NewDoc(t).Named("Dingus").OfBreed(BREED_CORGI)
+ */
+message Dog {
+  enum Breed {
+    BREED_UNSPECIFIED = 0;
+    BREED_CORGI = 1;
+    BREED_BOXER = 2;
+  }
+
+  string name = 1;
+  Breed breed = 2;
+}
