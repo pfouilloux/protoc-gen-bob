@@ -3,7 +3,7 @@ package app
 import (
 	"flag"
 	"fmt"
-	"gitlab.com/pfouilloux/bobgen/internal/display"
+	"github.com/pfouilloux/protoc-gen-bob/internal/display"
 )
 
 // App represents the application
@@ -29,7 +29,7 @@ func (cli *cli) Run(args []string) int {
 		flag.CommandLine.Parse(args[1:])
 	}
 
-	if flag.NArg() != 1 {
+	if flag.NArg() < 1 {
 		cli.display.Alert(fmt.Sprintf("missing path\n%s", cli.usage()))
 		return 1
 	}

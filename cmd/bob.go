@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/pfouilloux/bobgen/internal/app"
-	"gitlab.com/pfouilloux/bobgen/internal/display"
+	"github.com/pfouilloux/protoc-gen-bob/internal/app"
+	"github.com/pfouilloux/protoc-gen-bob/internal/display"
 	"os"
 )
 

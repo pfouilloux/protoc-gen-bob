@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/google/go-cmp/cmp"
-	"gitlab.com/pfouilloux/bobgen/internal/display"
+	"github.com/pfouilloux/protoc-gen-bob/internal/display"
 	"strings"
 	"testing"
 )

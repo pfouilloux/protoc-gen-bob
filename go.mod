@@ -1,4 +1,4 @@
-module gitlab.com/pfouilloux/bobgen
+module github.com/pfouilloux/protoc-gen-bob
 
 go 1.16
 
