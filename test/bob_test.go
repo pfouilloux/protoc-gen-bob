@@ -1,7 +1,7 @@
 package test
 
 import (
-	"BobGen/internal/test"
+	"github.com/google/go-cmp/cmp"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -17,14 +17,12 @@ func TestBobGen(t *testing.T) {
 		args        []string
 		expectInfo  string
 		expectAlert string
+		expect      string
 		expectFail  bool
 	}{
 		"should show usage if -h flag is set": {
 			args:       []string{"-h"},
-			expectInfo: "Usage of BobGen: bob <path> [opts]",
-		},
-		"should create expected builders": {
-			args: []string{},
+			expectInfo: "Usage of BobGen: bob <path> [opts]\n",
 		},
 	}
 
@@ -50,8 +48,19 @@ func TestBobGen(t *testing.T) {
 				t.Errorf("expected to exit with an error but got none")
 			}
 
-			test.AssertThatInformed(t, outs, tc.expectInfo)
-			test.AssertThatAlerted(t, errs, tc.expectAlert)
+			if tc.expect != "" {
+				expectFile := mustReadFile(t, filepath.Join("testdata", "output", tc.expect))
+				actualFile := mustReadFile(t, filepath.Join(tmp, tc.expect))
+				cmp.Diff(expectFile, actualFile)
+			}
+
+			if diff := cmp.Diff(outs.String(), tc.expectInfo); diff != "" {
+				t.Errorf("inform mismatch:\n%v", diff)
+			}
+
+			if diff := cmp.Diff(errs.String(), tc.expectAlert); diff != "" {
+				t.Errorf("alert mismatch:\n%v", diff)
+			}
 		})
 	}
 }
@@ -77,8 +86,15 @@ func rmDir(t *testing.T, dir string) {
 	}
 }
 
-func indent(str string) string {
-	return strings.Replace(str, "\n", "\n\t", -1)
+func mustReadFile(t *testing.T, path string) []byte {
+	t.Helper()
+
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		t.Fatalf("failed to read output: %v", err)
+	}
+
+	return file
 }
 
 func copyDir(t *testing.T, source, destination string) {

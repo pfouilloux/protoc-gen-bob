@@ -1,8 +1,8 @@
 package app
 
 import (
-	"BobGen/internal/output"
-	"BobGen/internal/test"
+	"github.com/google/go-cmp/cmp"
+	"gitlab.com/pfouilloux/bobgen/internal/display"
 	"strings"
 	"testing"
 )
@@ -18,7 +18,7 @@ func TestApp(t *testing.T) {
 	}{
 		"should show usage if no arguments are passed": {
 			args:           []string{},
-			expectInErr:    "missing path\nUsage of BobGen: bob <path> [opts]",
+			expectInErr:    "missing path\nUsage of BobGen: bob <path> [opts]\n",
 			expectExitCode: 1,
 		},
 	}
@@ -29,12 +29,17 @@ func TestApp(t *testing.T) {
 			var outs strings.Builder
 			var errs strings.Builder
 
-			if code := Cli(output.New(&outs, &errs)).Run(tc.args); code != tc.expectExitCode {
+			if code := Cli(display.New(&outs, &errs)).Run(tc.args); code != tc.expectExitCode {
 				t.Errorf("expect exit code %d but got %d", tc.expectExitCode, code)
 			}
 
-			test.AssertThatInformed(t, outs, tc.expectInOut)
-			test.AssertThatAlerted(t, errs, tc.expectInErr)
+			if diff := cmp.Diff(outs.String(), tc.expectInOut); diff != "" {
+				t.Errorf("inform mismatch:\n%v", diff)
+			}
+
+			if diff := cmp.Diff(errs.String(), tc.expectInErr); diff != "" {
+				t.Errorf("inform mismatch:\n%v", diff)
+			}
 		})
 	}
 }
