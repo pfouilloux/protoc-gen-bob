@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+option go_package = "./;testdata";
+
+//import "google/protobuf/any.proto";
+
+//message Clan {
+//  OrcType type = 1;
+//  string name = 2;
+//  optional float gold = 3;
+//  repeated Member orc = 4;
+//}
+//
+//enum OrcType {
+//  MORDOR = 0;
+//  URUK_HAI = 1;
+//  ISENGARD = 2;
+//}
+//
+//message Member {
+//  Orc details = 1;
+//  Location location = 2;
+//  google.protobuf.Any stats = 3; // expecting this to be interface{}
+//  oneof steed {
+//    Warg warg = 10;
+//    Caragor caragor = 11;
+//  };
+//}
+//
+//message Orc {
+//  string name = 1;
+//  uint32 age = 2;
+//  optional string title = 3;
+//  optional string rank = 4;
+//}
+//
+message Location {
+  int32 long = 1;
+  int32 lat = 2;
+}
+//
+//message Warg {
+//  enum Breed {
+//    BREED_UNSPECIFIED = 0;
+//    BREED_PLAINS = 1;
+//    BREED_MOUNTAIN = 2;
+//  }
+//
+//  string name = 1;
+//  Breed breed = 2;
+//}
+//
+//message Caragor {
+//  enum Breed {
+//    BREED_UNSPECIFIED = 0;
+//    BREED_LONG_TOOTH = 1;
+//    BREED_STALKER = 2;
+//  }
+//
+//  string name = 1;
+//  Breed breed = 2;
+//}
