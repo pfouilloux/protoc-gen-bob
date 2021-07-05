@@ -27,17 +27,16 @@ option go_package = "./;testdata";
 //  };
 //}
 //
-//message Orc {
-//  string name = 1;
-//  uint32 age = 2;
-//  optional string title = 3;
-//  optional string rank = 4;
-//}
-//
-message Location {
-  int32 long = 1;
-  int32 lat = 2;
+message Orc {
+  string name = 1;
+  uint32 age = 2;
+  optional string title = 3;
 }
+//
+//message Location {
+//  int32 long = 1;
+//  int32 lat = 2;
+//}
 //
 //message Warg {
 //  enum Breed {
@@ -48,6 +47,7 @@ message Location {
 //
 //  string name = 1;
 //  Breed breed = 2;
+//  bool saddled = 3;
 //}
 //
 //message Caragor {
@@ -59,4 +59,5 @@ message Location {
 //
 //  string name = 1;
 //  Breed breed = 2;
+//  bool armoured = 3;
 //}

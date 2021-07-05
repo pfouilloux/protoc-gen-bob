@@ -1,6 +1,6 @@
 .PHONY: update-testdata
 update-testdata:
-	protoc --go_out=./test/testdata/input ./test/testdata/input/orcs.proto
+	protoc --go_out=./cmd/testdata/ ./cmd/testdata/clan.proto
 
 .PHONY: check
 check: fmt test lint

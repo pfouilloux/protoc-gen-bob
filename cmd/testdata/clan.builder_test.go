@@ -12,9 +12,11 @@ func TestBuilders(t *testing.T) {
 		input  func() interface{}
 		expect interface{}
 	}{
-		"should build location": {
-			input:  func() interface{} { return NewLocation(42, 42).Build() },
-			expect: &Location{Long: 42, Lat: 24},
+		"should build orc": {
+			input: func() interface{} {
+				return NewOrc().Name("Joe").Age(32).Title("BigHammer").Build()
+			},
+			expect: &Orc{Name: "Joe", Age: 32, Title: stringPtr("BigHammer")},
 		},
 	}
 
@@ -29,4 +31,8 @@ func TestBuilders(t *testing.T) {
 			}
 		})
 	}
+}
+
+func stringPtr(val string) *string {
+	return &val
 }
