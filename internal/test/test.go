@@ -1,8 +1,9 @@
 package test
 
 import (
-	"github.com/google/go-cmp/cmp"
+	"errors"
 	"io/ioutil"
+	"strings"
 	"testing"
 )
 
@@ -19,9 +20,9 @@ func AssertSameError(t *testing.T, expected string, actual error) {
 	case expected == "" && actual != nil:
 		t.Errorf("unexpected error: %v", actual)
 	case expected != "" && actual == nil:
-		fallthrough
-	case actual != nil && expected != actual.Error():
-		t.Errorf("error mismatch:\n%s", cmp.Diff(expected, actual.Error()))
+		t.Errorf("expected '%s' but got nil", expected)
+	case actual != nil && !strings.HasPrefix(actual.Error(), expected):
+		t.Errorf("error mismatch:\n     expected: %s\nto start with: %s\n", actual.Error(), expected)
 	}
 }
 
@@ -34,4 +35,16 @@ func MustReadFile(t *testing.T, path string) []byte {
 	}
 
 	return file
+}
+
+type ExplodingReader struct{ Err string }
+
+func (e ExplodingReader) Read(_ []byte) (int, error) {
+	return 0, errors.New(e.Err)
+}
+
+type ExplodingWriter struct{ Err string }
+
+func (e ExplodingWriter) Write(_ []byte) (int, error) {
+	return 0, errors.New(e.Err)
 }

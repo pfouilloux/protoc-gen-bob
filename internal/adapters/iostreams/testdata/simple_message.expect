@@ -1,0 +1,22 @@
+package __
+
+// KettleBuilder provides a fluent api for building an instance of Kettle
+type KettleBuilder struct {
+	kettle *Kettle
+}
+
+// NewKettle starts building the Kettle
+func NewKettle() *KettleBuilder {
+	return &KettleBuilder{&Kettle{}}
+}
+
+// Temperature sets Kettle.Temperature
+func (kettleBuilder *KettleBuilder) Temperature(temperature int32) *KettleBuilder {
+	kettleBuilder.kettle.Temperature = temperature
+	return kettleBuilder
+}
+
+// Build builds the Kettle
+func (kettleBuilder *KettleBuilder) Build() *Kettle {
+	return kettleBuilder.kettle
+}

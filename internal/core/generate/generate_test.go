@@ -1,7 +1,6 @@
 package generate
 
 import (
-	"errors"
 	"fmt"
 	"github.com/google/go-cmp/cmp"
 	"github.com/pfouilloux/protoc-gen-bob/internal/core/model"
@@ -50,13 +49,13 @@ func TestGenerateBuilder(t *testing.T) {
 			}
 
 			buffers := make([]strings.Builder, len(tc.input))
-			tasks := make([]Task, len(tc.input))
+			specs := make([]Spec, len(tc.input))
 			for i, file := range tc.input {
 				buffers[i] = strings.Builder{}
-				tasks[i] = NewTask(fmt.Sprint("test", i), file, &buffers[i])
+				specs[i] = NewSpec(fmt.Sprint("test", i), file, &buffers[i])
 			}
 
-			err := Builders(tasks...)
+			err := Builders(specs...)
 			test.AssertNoError(t, err)
 
 			for i, xf := range tc.expect {
@@ -74,14 +73,8 @@ func TestGenerateBuilder(t *testing.T) {
 func TestWriterErrorHandling(t *testing.T) {
 	t.Parallel()
 
-	task := NewTask("trap", model.NewFile("bla"), ExplodingWriter{})
+	task := NewSpec("trap", model.NewFile("bla"), test.ExplodingWriter{Err: "boom"})
 
 	err := Builders(task)
-	test.AssertSameError(t, "failed create a builder for task 0 'trap': boom", err)
-}
-
-type ExplodingWriter struct{}
-
-func (e ExplodingWriter) Write(p []byte) (n int, err error) {
-	return 0, errors.New("boom")
+	test.AssertSameError(t, "failed create a builder for task 0 'trap'", err)
 }
