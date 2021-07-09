@@ -1,7 +1,6 @@
 package generate
 
 import (
-	"fmt"
 	"github.com/google/go-cmp/cmp"
 	"github.com/pfouilloux/protoc-gen-bob/internal/core/model"
 	"github.com/pfouilloux/protoc-gen-bob/internal/test"
@@ -14,28 +13,24 @@ func TestGenerateBuilder(t *testing.T) {
 	t.Parallel()
 
 	tcs := map[string]struct {
-		input  []model.File
-		expect []string
+		input  model.File
+		expect string
 	}{
 		"should generate a builder with only a package declaration": {
-			input:  []model.File{model.NewFile("testdata")},
-			expect: []string{"package_decl.test"},
-		},
-		"should generate multiple builders": {
-			input:  []model.File{model.NewFile("testdata"), model.NewFile("testdata")},
-			expect: []string{"package_decl.test", "package_decl.test"},
+			input:  model.NewFile("testdata"),
+			expect: "package_decl.test",
 		},
 		"should generate a builder with an empty message": {
-			input:  []model.File{model.NewFile("testdata", model.NewMessage("Kettle"))},
-			expect: []string{"empty_message.test"},
+			input:  model.NewFile("testdata", model.NewMessage("Kettle")),
+			expect: "empty_message.test",
 		},
 		"should generate a builder with three fields": {
-			input: []model.File{model.NewFile("testdata", model.NewMessage("Kettle",
+			input: model.NewFile("testdata", model.NewMessage("Kettle",
 				model.NewField("Material", "string", false),
 				model.NewField("Colour", "string", true),
 				model.NewField("Capacity", "uint32", false),
-			))},
-			expect: []string{"message_with_fields.test"},
+			)),
+			expect: "message_with_fields.test",
 		},
 	}
 
@@ -43,27 +38,14 @@ func TestGenerateBuilder(t *testing.T) {
 		tc := tc
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			if len(tc.input) != len(tc.expect) {
-				t.Fatalf("$d inputs != $d expectations. These must be the same for comparisons to work. " +
-					"Please pad out with nils or zero values if need be")
-			}
 
-			buffers := make([]strings.Builder, len(tc.input))
-			specs := make([]Spec, len(tc.input))
-			for i, file := range tc.input {
-				buffers[i] = strings.Builder{}
-				specs[i] = NewSpec(fmt.Sprint("test", i), file, &buffers[i])
-			}
-
-			err := Builders(specs...)
+			var buf strings.Builder
+			err := Generate(&buf, tc.input)
 			test.AssertNoError(t, err)
 
-			for i, xf := range tc.expect {
-				expect := string(test.MustReadFile(t, filepath.Join("testdata", xf)))
-				actual := buffers[i].String()
-				if diff := cmp.Diff(expect, actual); diff != "" {
-					t.Errorf("item %d mismatch:\n%s", i, diff)
-				}
+			expect := string(test.MustReadFile(t, filepath.Join("testdata", tc.expect)))
+			if diff := cmp.Diff(expect, buf.String()); diff != "" {
+				t.Errorf("mismatch:\n%s", diff)
 			}
 		})
 
@@ -73,8 +55,6 @@ func TestGenerateBuilder(t *testing.T) {
 func TestWriterErrorHandling(t *testing.T) {
 	t.Parallel()
 
-	task := NewSpec("trap", model.NewFile("bla"), test.ExplodingWriter{Err: "boom"})
-
-	err := Builders(task)
-	test.AssertSameError(t, "failed create a builder for task 0 'trap'", err)
+	err := Generate(test.ExplodingWriter{Err: "boom"}, model.NewFile("oops"))
+	test.AssertSameError(t, "failed create a builder:", err)
 }

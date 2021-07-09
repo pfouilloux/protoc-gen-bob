@@ -2,6 +2,8 @@ package test
 
 import (
 	"errors"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"io/ioutil"
 	"strings"
 	"testing"
@@ -24,6 +26,15 @@ func AssertSameError(t *testing.T, expected string, actual error) {
 	case actual != nil && !strings.HasPrefix(actual.Error(), expected):
 		t.Errorf("error mismatch:\n     expected: %s\nto start with: %s\n", actual.Error(), expected)
 	}
+}
+
+func MustMarshal(t *testing.T, msg protoreflect.ProtoMessage) []byte {
+	t.Helper()
+
+	out, err := proto.Marshal(msg)
+	AssertNoError(t, err)
+
+	return out
 }
 
 func MustReadFile(t *testing.T, path string) []byte {
