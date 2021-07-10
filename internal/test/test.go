@@ -42,7 +42,7 @@ func MustReadFile(t *testing.T, path string) []byte {
 
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
-		t.Fatalf("failed to read output: %v", err)
+		t.Errorf("failed to read output: %v", err)
 	}
 
 	return file

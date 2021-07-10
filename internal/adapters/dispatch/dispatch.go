@@ -101,17 +101,19 @@ func goType(field *descriptorpb.FieldDescriptorProto) string {
 	case descriptorpb.FieldDescriptorProto_TYPE_INT64, descriptorpb.FieldDescriptorProto_TYPE_SINT64, descriptorpb.FieldDescriptorProto_TYPE_SFIXED64:
 		out = "int64"
 	case descriptorpb.FieldDescriptorProto_TYPE_UINT64, descriptorpb.FieldDescriptorProto_TYPE_FIXED64:
+		out = "uint64"
 	case descriptorpb.FieldDescriptorProto_TYPE_BYTES:
 		out = "[]byte"
 	case descriptorpb.FieldDescriptorProto_TYPE_GROUP:
-		panic("unsupported!")
+		panic("unsupported!") // TODO error
 	case descriptorpb.FieldDescriptorProto_TYPE_MESSAGE:
-		panic("unsupported!")
+		out = field.GetTypeName() // TODO handle nested messages
 	case descriptorpb.FieldDescriptorProto_TYPE_ENUM:
-		panic("unsupported!")
+		out = strings.ReplaceAll(strings.TrimPrefix(field.GetTypeName(), "."), ".", "_")
 	}
 
 	switch field.GetLabel() {
+	// TODO: test for this and test for optional as well
 	case descriptorpb.FieldDescriptorProto_LABEL_REPEATED:
 		return "[]" + out
 	}
