@@ -3,7 +3,6 @@ package dispatch
 import (
 	"bytes"
 	"errors"
-	"flag"
 	"fmt"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/google/go-cmp/cmp"
@@ -13,14 +12,10 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 	"io"
-	"os"
-	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
 )
-
-var update = flag.Bool("update", false, "updates testdata")
 
 func TestProtocGen(t *testing.T) {
 	t.Parallel()
@@ -49,7 +44,7 @@ func TestProtocGen(t *testing.T) {
 				SupportedFeatures: proto.Uint64((uint64)(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)),
 				File: []*pluginpb.CodeGeneratorResponse_File{{
 					Name:    proto.String("all_types.builder.go"),
-					Content: proto.String(string(test.MustReadFile(t, filepath.Join("testdata", "all_types.builder.go.expect")))),
+					Content: proto.String(string(test.MustReadGoldenFile(t, "all_types.builder.go"))),
 				}},
 			},
 		},
@@ -79,7 +74,7 @@ func TestProtocGen(t *testing.T) {
 				SupportedFeatures: proto.Uint64((uint64)(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)),
 				File: []*pluginpb.CodeGeneratorResponse_File{{
 					Name:    proto.String("enum.builder.go"),
-					Content: proto.String(string(test.MustReadFile(t, filepath.Join("testdata", "enum.builder.go.expect")))),
+					Content: proto.String(string(test.MustReadGoldenFile(t, "enum.builder.go"))),
 				}},
 			},
 		},
@@ -125,7 +120,7 @@ func TestProtocGen(t *testing.T) {
 			var out pluginpb.CodeGeneratorResponse
 			test.AssertNoError(t, proto.Unmarshal(resp.bytes, &out))
 
-			if *update {
+			if test.IsUpdateFlagSet() {
 				updateFiles(t, &out)
 			} else {
 				assertOutputMatches(t, tc.expect, &out)
@@ -138,11 +133,7 @@ func updateFiles(t *testing.T, out *pluginpb.CodeGeneratorResponse) {
 	t.Helper()
 
 	for _, file := range out.File {
-		err := os.WriteFile(
-			filepath.Join("testdata", *file.Name+".expect"),
-			bytes.NewBufferString(*file.Content).Bytes(),
-			os.FileMode(0665))
-		test.AssertNoError(t, err)
+		test.UpdateTestData(t, *file.Name, bytes.NewBufferString(*file.Content).Bytes())
 	}
 }
 
@@ -151,9 +142,10 @@ func assertOutputMatches(t *testing.T, expect, actual *pluginpb.CodeGeneratorRes
 		return
 	}
 
-	t.Errorf("output mismatch:\nexpected: %+v\n but got: %+v", expect, actual)
-	if expect != nil && actual.File != nil {
+	if expect != nil && actual.File != nil && !reflect.DeepEqual(expect.File, actual.File) {
 		printFileDifferences(t, expect.File, actual.File)
+	} else {
+		t.Errorf("output mismatch:\nexpected: %+v\n but got: %+v", expect, actual)
 	}
 }
 

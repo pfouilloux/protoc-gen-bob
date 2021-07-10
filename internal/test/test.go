@@ -2,12 +2,17 @@ package test
 
 import (
 	"errors"
+	"flag"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+var update = flag.Bool("update", false, "updates testdata")
 
 func AssertNoError(t *testing.T, err error) {
 	t.Helper()
@@ -37,6 +42,12 @@ func MustMarshal(t *testing.T, msg protoreflect.ProtoMessage) []byte {
 	return out
 }
 
+func MustReadGoldenFile(t *testing.T, path string) []byte {
+	t.Helper()
+
+	return MustReadFile(t, filepath.Join("testdata", path))
+}
+
 func MustReadFile(t *testing.T, path string) []byte {
 	t.Helper()
 
@@ -46,6 +57,15 @@ func MustReadFile(t *testing.T, path string) []byte {
 	}
 
 	return file
+}
+
+func IsUpdateFlagSet() bool {
+	return *update
+}
+
+func UpdateTestData(t *testing.T, file string, content []byte) {
+	err := os.WriteFile(filepath.Join("testdata", file), content, os.FileMode(0665))
+	AssertNoError(t, err)
 }
 
 type ExplodingReader struct{ Err string }

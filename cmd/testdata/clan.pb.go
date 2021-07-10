@@ -20,6 +20,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Warg_Breed int32
+
+const (
+	Warg_BREED_UNSPECIFIED Warg_Breed = 0
+	Warg_BREED_PLAINS      Warg_Breed = 1
+	Warg_BREED_MOUNTAIN    Warg_Breed = 2
+)
+
+// Enum value maps for Warg_Breed.
+var (
+	Warg_Breed_name = map[int32]string{
+		0: "BREED_UNSPECIFIED",
+		1: "BREED_PLAINS",
+		2: "BREED_MOUNTAIN",
+	}
+	Warg_Breed_value = map[string]int32{
+		"BREED_UNSPECIFIED": 0,
+		"BREED_PLAINS":      1,
+		"BREED_MOUNTAIN":    2,
+	}
+)
+
+func (x Warg_Breed) Enum() *Warg_Breed {
+	p := new(Warg_Breed)
+	*p = x
+	return p
+}
+
+func (x Warg_Breed) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Warg_Breed) Descriptor() protoreflect.EnumDescriptor {
+	return file_cmd_testdata_clan_proto_enumTypes[0].Descriptor()
+}
+
+func (Warg_Breed) Type() protoreflect.EnumType {
+	return &file_cmd_testdata_clan_proto_enumTypes[0]
+}
+
+func (x Warg_Breed) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Warg_Breed.Descriptor instead.
+func (Warg_Breed) EnumDescriptor() ([]byte, []int) {
+	return file_cmd_testdata_clan_proto_rawDescGZIP(), []int{1, 0}
+}
+
 //message Clan {
 //  OrcType type = 1;
 //  string name = 2;
@@ -35,7 +84,6 @@ const (
 //
 //message Member {
 //  Orc details = 1;
-//  Location location = 2;
 //  google.protobuf.Any stats = 3; // expecting this to be interface{}
 //  oneof steed {
 //    Warg warg = 10;
@@ -106,6 +154,69 @@ func (x *Orc) GetTitle() string {
 	return ""
 }
 
+type Warg struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name    string     `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Breed   Warg_Breed `protobuf:"varint,2,opt,name=breed,proto3,enum=Warg_Breed" json:"breed,omitempty"`
+	Saddled bool       `protobuf:"varint,3,opt,name=saddled,proto3" json:"saddled,omitempty"`
+}
+
+func (x *Warg) Reset() {
+	*x = Warg{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cmd_testdata_clan_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Warg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Warg) ProtoMessage() {}
+
+func (x *Warg) ProtoReflect() protoreflect.Message {
+	mi := &file_cmd_testdata_clan_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Warg.ProtoReflect.Descriptor instead.
+func (*Warg) Descriptor() ([]byte, []int) {
+	return file_cmd_testdata_clan_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Warg) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Warg) GetBreed() Warg_Breed {
+	if x != nil {
+		return x.Breed
+	}
+	return Warg_BREED_UNSPECIFIED
+}
+
+func (x *Warg) GetSaddled() bool {
+	if x != nil {
+		return x.Saddled
+	}
+	return false
+}
+
 var File_cmd_testdata_clan_proto protoreflect.FileDescriptor
 
 var file_cmd_testdata_clan_proto_rawDesc = []byte{
@@ -115,7 +226,17 @@ var file_cmd_testdata_clan_proto_rawDesc = []byte{
 	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x0d, 0x52, 0x03, 0x61, 0x67, 0x65, 0x12, 0x19, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18,
 	0x03, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x88, 0x01,
-	0x01, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x42, 0x0d, 0x5a, 0x0b, 0x2e,
+	0x01, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x22, 0x9d, 0x01, 0x0a, 0x04,
+	0x57, 0x61, 0x72, 0x67, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x21, 0x0a, 0x05, 0x62, 0x72, 0x65, 0x65,
+	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x0b, 0x2e, 0x57, 0x61, 0x72, 0x67, 0x2e, 0x42,
+	0x72, 0x65, 0x65, 0x64, 0x52, 0x05, 0x62, 0x72, 0x65, 0x65, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x73,
+	0x61, 0x64, 0x64, 0x6c, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x61,
+	0x64, 0x64, 0x6c, 0x65, 0x64, 0x22, 0x44, 0x0a, 0x05, 0x42, 0x72, 0x65, 0x65, 0x64, 0x12, 0x15,
+	0x0a, 0x11, 0x42, 0x52, 0x45, 0x45, 0x44, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46,
+	0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x10, 0x0a, 0x0c, 0x42, 0x52, 0x45, 0x45, 0x44, 0x5f, 0x50,
+	0x4c, 0x41, 0x49, 0x4e, 0x53, 0x10, 0x01, 0x12, 0x12, 0x0a, 0x0e, 0x42, 0x52, 0x45, 0x45, 0x44,
+	0x5f, 0x4d, 0x4f, 0x55, 0x4e, 0x54, 0x41, 0x49, 0x4e, 0x10, 0x02, 0x42, 0x0d, 0x5a, 0x0b, 0x2e,
 	0x2f, 0x3b, 0x74, 0x65, 0x73, 0x74, 0x64, 0x61, 0x74, 0x61, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x33,
 }
@@ -132,16 +253,20 @@ func file_cmd_testdata_clan_proto_rawDescGZIP() []byte {
 	return file_cmd_testdata_clan_proto_rawDescData
 }
 
-var file_cmd_testdata_clan_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_cmd_testdata_clan_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_cmd_testdata_clan_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_cmd_testdata_clan_proto_goTypes = []interface{}{
-	(*Orc)(nil), // 0: Orc
+	(Warg_Breed)(0), // 0: Warg.Breed
+	(*Orc)(nil),     // 1: Orc
+	(*Warg)(nil),    // 2: Warg
 }
 var file_cmd_testdata_clan_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: Warg.breed:type_name -> Warg.Breed
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_cmd_testdata_clan_proto_init() }
@@ -162,6 +287,18 @@ func file_cmd_testdata_clan_proto_init() {
 				return nil
 			}
 		}
+		file_cmd_testdata_clan_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Warg); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_cmd_testdata_clan_proto_msgTypes[0].OneofWrappers = []interface{}{}
 	type x struct{}
@@ -169,13 +306,14 @@ func file_cmd_testdata_clan_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_cmd_testdata_clan_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   1,
+			NumEnums:      1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_cmd_testdata_clan_proto_goTypes,
 		DependencyIndexes: file_cmd_testdata_clan_proto_depIdxs,
+		EnumInfos:         file_cmd_testdata_clan_proto_enumTypes,
 		MessageInfos:      file_cmd_testdata_clan_proto_msgTypes,
 	}.Build()
 	File_cmd_testdata_clan_proto = out.File

@@ -19,7 +19,6 @@ option go_package = "./;testdata";
 //
 //message Member {
 //  Orc details = 1;
-//  Location location = 2;
 //  google.protobuf.Any stats = 3; // expecting this to be interface{}
 //  oneof steed {
 //    Warg warg = 10;
@@ -32,32 +31,27 @@ message Orc {
   uint32 age = 2;
   optional string title = 3;
 }
-//
-//message Location {
-//  int32 long = 1;
-//  int32 lat = 2;
-//}
-//
-//message Warg {
-//  enum Breed {
-//    BREED_UNSPECIFIED = 0;
-//    BREED_PLAINS = 1;
-//    BREED_MOUNTAIN = 2;
-//  }
-//
-//  string name = 1;
-//  Breed breed = 2;
-//  bool saddled = 3;
-//}
-//
+
+message Warg {
+  enum Breed {
+    BREED_UNSPECIFIED = 0;
+    BREED_PLAINS = 1;
+    BREED_MOUNTAIN = 2;
+  }
+
+  string name = 1;
+  Breed breed = 2;
+  bool saddled = 3;
+}
+
 //message Caragor {
-//  enum Breed {
-//    BREED_UNSPECIFIED = 0;
-//    BREED_LONG_TOOTH = 1;
-//    BREED_STALKER = 2;
+//  message Equipment {
+//    int32 spears = 1;
+//    int32 bows = 2;
+//    int32 provisions = 3;
 //  }
 //
 //  string name = 1;
-//  Breed breed = 2;
+//  Equipment equipment = 2;
 //  bool armoured = 3;
 //}

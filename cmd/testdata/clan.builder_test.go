@@ -18,6 +18,12 @@ func TestBuilders(t *testing.T) {
 			},
 			expect: &Orc{Name: "Joe", Age: 32, Title: stringPtr("BigHammer")},
 		},
+		"should build warg": {
+			input: func() interface{} {
+				return NewWarg().Name("Pup").Saddled().Breed(Warg_BREED_MOUNTAIN).Build()
+			},
+			expect: &Warg{Name: "Pup", Saddled: true, Breed: Warg_BREED_MOUNTAIN},
+		},
 	}
 
 	for name, tc := range testcases {

@@ -53,8 +53,8 @@ func (msgBuilder *MsgBuilder) Field6(field6 uint32) *MsgBuilder {
 }
 
 // Field7 sets Msg.Field7
-func (msgBuilder *MsgBuilder) Field7(field7 bool) *MsgBuilder {
-	msgBuilder.msg.Field7 = field7
+func (msgBuilder *MsgBuilder) Field7() *MsgBuilder {
+	msgBuilder.msg.Field7 = true
 	return msgBuilder
 }
 
