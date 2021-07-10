@@ -24,6 +24,14 @@ func TestBuilders(t *testing.T) {
 			},
 			expect: &Warg{Name: "Pup", Saddled: true, Breed: Warg_BREED_MOUNTAIN},
 		},
+		"should build caragor": {
+			input: func() interface{} {
+				return NewCaragor().Name("Prune").Armoured().Equipment(
+					NewCaragor_Equipment().Spears(12).Bows(42).Provisions(10),
+				).Build()
+			},
+			expect: &Caragor{Name: "Prune", Armoured: true, Equipment: &Caragor_Equipment{Spears: 12, Bows: 42, Provisions: 10}},
+		},
 	}
 
 	for name, tc := range testcases {

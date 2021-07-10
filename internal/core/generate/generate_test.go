@@ -26,18 +26,25 @@ func TestGenerateBuilder(t *testing.T) {
 		},
 		"should generate a builder with three fields": {
 			input: model.NewFile("testdata", model.NewMessage("Kettle",
-				model.NewField("Material", "string", false),
-				model.NewField("Colour", "string", true),
-				model.NewField("Capacity", "uint32", false),
+				model.NewField("Material", "string", false, false),
+				model.NewField("Colour", "string", true, false),
+				model.NewField("Capacity", "uint32", false, false),
 			)),
 			expect: "message_with_fields.builder.go",
 		},
 		"should skip passing a value for a boolean field": {
 			input: model.NewFile("testdata", model.NewMessage("Cup",
-				model.NewField("Full", "bool", false),
-				model.NewField("Hot", "bool", true),
+				model.NewField("Full", "bool", false, false),
+				model.NewField("Hot", "bool", true, false),
 			)),
 			expect: "message_with_booleans.builder.go",
+		},
+		"should generate a builder with an message field": {
+			input: model.NewFile("testdata", model.NewMessage("Cup",
+				model.NewField("Tea", "Tea", false, true),
+				model.NewField("Sugar", "Sugar", true, true),
+			)),
+			expect: "nested_message.builder.go",
 		},
 	}
 

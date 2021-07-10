@@ -44,14 +44,14 @@ message Warg {
   bool saddled = 3;
 }
 
-//message Caragor {
-//  message Equipment {
-//    int32 spears = 1;
-//    int32 bows = 2;
-//    int32 provisions = 3;
-//  }
-//
-//  string name = 1;
-//  Equipment equipment = 2;
-//  bool armoured = 3;
-//}
+message Caragor {
+  message Equipment {
+    int32 spears = 1;
+    int32 bows = 2;
+    int32 provisions = 3;
+  }
+
+  string name = 1;
+  Equipment equipment = 2;
+  bool armoured = 3;
+}

@@ -217,6 +217,132 @@ func (x *Warg) GetSaddled() bool {
 	return false
 }
 
+type Caragor struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name      string             `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Equipment *Caragor_Equipment `protobuf:"bytes,2,opt,name=equipment,proto3" json:"equipment,omitempty"`
+	Armoured  bool               `protobuf:"varint,3,opt,name=armoured,proto3" json:"armoured,omitempty"`
+}
+
+func (x *Caragor) Reset() {
+	*x = Caragor{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cmd_testdata_clan_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Caragor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Caragor) ProtoMessage() {}
+
+func (x *Caragor) ProtoReflect() protoreflect.Message {
+	mi := &file_cmd_testdata_clan_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Caragor.ProtoReflect.Descriptor instead.
+func (*Caragor) Descriptor() ([]byte, []int) {
+	return file_cmd_testdata_clan_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Caragor) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Caragor) GetEquipment() *Caragor_Equipment {
+	if x != nil {
+		return x.Equipment
+	}
+	return nil
+}
+
+func (x *Caragor) GetArmoured() bool {
+	if x != nil {
+		return x.Armoured
+	}
+	return false
+}
+
+type Caragor_Equipment struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Spears     int32 `protobuf:"varint,1,opt,name=spears,proto3" json:"spears,omitempty"`
+	Bows       int32 `protobuf:"varint,2,opt,name=bows,proto3" json:"bows,omitempty"`
+	Provisions int32 `protobuf:"varint,3,opt,name=provisions,proto3" json:"provisions,omitempty"`
+}
+
+func (x *Caragor_Equipment) Reset() {
+	*x = Caragor_Equipment{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cmd_testdata_clan_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Caragor_Equipment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Caragor_Equipment) ProtoMessage() {}
+
+func (x *Caragor_Equipment) ProtoReflect() protoreflect.Message {
+	mi := &file_cmd_testdata_clan_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Caragor_Equipment.ProtoReflect.Descriptor instead.
+func (*Caragor_Equipment) Descriptor() ([]byte, []int) {
+	return file_cmd_testdata_clan_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *Caragor_Equipment) GetSpears() int32 {
+	if x != nil {
+		return x.Spears
+	}
+	return 0
+}
+
+func (x *Caragor_Equipment) GetBows() int32 {
+	if x != nil {
+		return x.Bows
+	}
+	return 0
+}
+
+func (x *Caragor_Equipment) GetProvisions() int32 {
+	if x != nil {
+		return x.Provisions
+	}
+	return 0
+}
+
 var File_cmd_testdata_clan_proto protoreflect.FileDescriptor
 
 var file_cmd_testdata_clan_proto_rawDesc = []byte{
@@ -236,9 +362,21 @@ var file_cmd_testdata_clan_proto_rawDesc = []byte{
 	0x0a, 0x11, 0x42, 0x52, 0x45, 0x45, 0x44, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46,
 	0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x10, 0x0a, 0x0c, 0x42, 0x52, 0x45, 0x45, 0x44, 0x5f, 0x50,
 	0x4c, 0x41, 0x49, 0x4e, 0x53, 0x10, 0x01, 0x12, 0x12, 0x0a, 0x0e, 0x42, 0x52, 0x45, 0x45, 0x44,
-	0x5f, 0x4d, 0x4f, 0x55, 0x4e, 0x54, 0x41, 0x49, 0x4e, 0x10, 0x02, 0x42, 0x0d, 0x5a, 0x0b, 0x2e,
-	0x2f, 0x3b, 0x74, 0x65, 0x73, 0x74, 0x64, 0x61, 0x74, 0x61, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x5f, 0x4d, 0x4f, 0x55, 0x4e, 0x54, 0x41, 0x49, 0x4e, 0x10, 0x02, 0x22, 0xc4, 0x01, 0x0a, 0x07,
+	0x43, 0x61, 0x72, 0x61, 0x67, 0x6f, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x30, 0x0a, 0x09, 0x65,
+	0x71, 0x75, 0x69, 0x70, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12,
+	0x2e, 0x43, 0x61, 0x72, 0x61, 0x67, 0x6f, 0x72, 0x2e, 0x45, 0x71, 0x75, 0x69, 0x70, 0x6d, 0x65,
+	0x6e, 0x74, 0x52, 0x09, 0x65, 0x71, 0x75, 0x69, 0x70, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x1a, 0x0a,
+	0x08, 0x61, 0x72, 0x6d, 0x6f, 0x75, 0x72, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x08, 0x61, 0x72, 0x6d, 0x6f, 0x75, 0x72, 0x65, 0x64, 0x1a, 0x57, 0x0a, 0x09, 0x45, 0x71, 0x75,
+	0x69, 0x70, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x70, 0x65, 0x61, 0x72, 0x73,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x73, 0x70, 0x65, 0x61, 0x72, 0x73, 0x12, 0x12,
+	0x0a, 0x04, 0x62, 0x6f, 0x77, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x62, 0x6f,
+	0x77, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x73, 0x69, 0x6f, 0x6e, 0x73,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x73, 0x69, 0x6f,
+	0x6e, 0x73, 0x42, 0x0d, 0x5a, 0x0b, 0x2e, 0x2f, 0x3b, 0x74, 0x65, 0x73, 0x74, 0x64, 0x61, 0x74,
+	0x61, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -254,19 +392,22 @@ func file_cmd_testdata_clan_proto_rawDescGZIP() []byte {
 }
 
 var file_cmd_testdata_clan_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_cmd_testdata_clan_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_cmd_testdata_clan_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_cmd_testdata_clan_proto_goTypes = []interface{}{
-	(Warg_Breed)(0), // 0: Warg.Breed
-	(*Orc)(nil),     // 1: Orc
-	(*Warg)(nil),    // 2: Warg
+	(Warg_Breed)(0),           // 0: Warg.Breed
+	(*Orc)(nil),               // 1: Orc
+	(*Warg)(nil),              // 2: Warg
+	(*Caragor)(nil),           // 3: Caragor
+	(*Caragor_Equipment)(nil), // 4: Caragor.Equipment
 }
 var file_cmd_testdata_clan_proto_depIdxs = []int32{
 	0, // 0: Warg.breed:type_name -> Warg.Breed
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 1: Caragor.equipment:type_name -> Caragor.Equipment
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_cmd_testdata_clan_proto_init() }
@@ -299,6 +440,30 @@ func file_cmd_testdata_clan_proto_init() {
 				return nil
 			}
 		}
+		file_cmd_testdata_clan_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Caragor); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cmd_testdata_clan_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Caragor_Equipment); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_cmd_testdata_clan_proto_msgTypes[0].OneofWrappers = []interface{}{}
 	type x struct{}
@@ -307,7 +472,7 @@ func file_cmd_testdata_clan_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_cmd_testdata_clan_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

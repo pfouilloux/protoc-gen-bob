@@ -16,10 +16,21 @@ func New{{.Name}}() *{{$builder}} {
     return &{{$builder}}{&{{.Name}}{}}
 }
 {{range .Fields -}}
-{{$isReqBool := and (eq .Kind "bool") (ne .IsOptional true)}}
+	{{- $lower_name := toLower .Name -}}
+    {{- $arg := (printf "%s %s" $lower_name .Kind) -}}
+    {{- $val := $lower_name -}}
+    {{- if and (eq .Kind "bool") (not .IsOptional) -}}
+        {{- $arg = "" -}}
+        {{- $val = "true" -}}
+    {{- else if .IsMessage -}}
+		{{- $arg = (printf "%s *%sBuilder" $lower_name .Kind) -}}
+		{{- $val = (printf "%s.Build()" $lower_name) -}}
+	{{- else if .IsOptional -}}
+		{{- $val = (printf "&%s" $lower_name)}}
+    {{- end}}
 // {{.Name}} sets {{$name}}.{{.Name}}
-func ({{$receiver}} *{{$builder}}) {{.Name}}({{if not $isReqBool}}{{toLower .Name}} {{.Kind}}{{end}}) *{{$builder}} {
-    {{$receiver}}.{{$backing}}.{{.Name}} = {{if $isReqBool}}true{{else}}{{if .IsOptional}}&{{end}}{{toLower .Name}}{{end}}
+func ({{$receiver}} *{{$builder}}) {{.Name}}({{$arg}}) *{{$builder}} {
+    {{$receiver}}.{{$backing}}.{{.Name}} = {{$val}}
     return {{$receiver}}
 }
 {{end}}

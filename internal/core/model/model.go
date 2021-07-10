@@ -22,9 +22,13 @@ type Field struct {
 	name     string
 	kind     string
 	optional bool
+	message  bool
 }
 
-func NewField(name, kind string, optional bool) Field { return Field{name, kind, optional} }
-func (f Field) IsOptional() bool                      { return f.optional }
-func (f Field) Name() string                          { return f.name }
-func (f Field) Kind() string                          { return f.kind }
+func NewField(name, kind string, optional, message bool) Field {
+	return Field{name, kind, optional, message}
+}
+func (f Field) IsOptional() bool { return f.optional }
+func (f Field) IsMessage() bool  { return f.message }
+func (f Field) Name() string     { return f.name }
+func (f Field) Kind() string     { return f.kind }

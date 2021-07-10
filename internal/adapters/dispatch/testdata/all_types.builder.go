@@ -65,8 +65,8 @@ func (msgBuilder *MsgBuilder) Field8(field8 string) *MsgBuilder {
 }
 
 // Field10 sets Msg.Field10
-func (msgBuilder *MsgBuilder) Field10(field10 Msg) *MsgBuilder {
-	msgBuilder.msg.Field10 = field10
+func (msgBuilder *MsgBuilder) Field10(field10 *MsgBuilder) *MsgBuilder {
+	msgBuilder.msg.Field10 = field10.Build()
 	return msgBuilder
 }
 

@@ -78,6 +78,35 @@ func TestProtocGen(t *testing.T) {
 				}},
 			},
 		},
+		"should handle nested messages": {
+			input: NewRequest(test.MustMarshal(t, &pluginpb.CodeGeneratorRequest{ProtoFile: []*descriptorpb.FileDescriptorProto{{
+				Name: proto.String("nested.proto"),
+				MessageType: []*descriptor.DescriptorProto{{
+					Name: proto.String("Msg"),
+					NestedType: []*descriptor.DescriptorProto{{
+						Name: proto.String("Nested"),
+					}},
+					Field: []*descriptorpb.FieldDescriptorProto{
+						{
+							Number:   proto.Int32(1),
+							Name:     proto.String("val"),
+							Type:     protoTypePtr(descriptorpb.FieldDescriptorProto_TYPE_MESSAGE),
+							TypeName: proto.String(".Msg.Nested"),
+						},
+					},
+				}},
+				Options: &descriptorpb.FileOptions{
+					GoPackage: proto.String("."),
+				},
+			}}})),
+			expect: &pluginpb.CodeGeneratorResponse{
+				SupportedFeatures: proto.Uint64((uint64)(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)),
+				File: []*pluginpb.CodeGeneratorResponse_File{{
+					Name:    proto.String("nested.builder.go"),
+					Content: proto.String(string(test.MustReadGoldenFile(t, "nested.builder.go"))),
+				}},
+			},
+		},
 		"should fail to generate builders": {
 			mutagen: func(d *dispatcher) {
 				d.generate = func(_ io.Writer, _ model.File) error { return errors.New("boom") }
@@ -156,7 +185,7 @@ func printFileDifferences(t *testing.T, expect, actual []*pluginpb.CodeGenerator
 	}
 
 	for i := 0; i < len(expect); i++ {
-		if diff := cmp.Diff(actual[i].Content, actual[i].Content); diff != "" {
+		if diff := cmp.Diff(expect[i].Content, actual[i].Content); diff != "" {
 			t.Errorf("file %d diff: %s", i, diff)
 		}
 	}

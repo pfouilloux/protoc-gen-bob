@@ -2,6 +2,7 @@ package dispatch
 
 import (
 	"fmt"
+	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/pfouilloux/protoc-gen-bob/internal/core/generate"
 	"github.com/pfouilloux/protoc-gen-bob/internal/core/model"
 	"google.golang.org/protobuf/compiler/protogen"
@@ -71,16 +72,37 @@ func initPlugin(req *pluginpb.CodeGeneratorRequest) (*protogen.Plugin, error) {
 }
 
 func plan(desc *protogen.File) model.File {
-	messages := make([]model.Message, len(desc.Proto.MessageType))
-	for m, msg := range desc.Proto.MessageType {
-		fields := make([]model.Field, len(msg.GetField()))
-		for f, field := range msg.Field {
-			fields[f] = model.NewField(strings.Title(field.GetName()), goType(field), field.GetProto3Optional())
-		}
-		messages[m] = model.NewMessage(strings.Title(msg.GetName()), fields...)
+	var messages []model.Message
+	for _, msg := range desc.Proto.MessageType {
+		messages = append(messages, planMessage(msg, "")...)
 	}
 
 	return model.NewFile((string)(desc.GoPackageName), messages...)
+}
+
+func planMessage(desc *descriptor.DescriptorProto, parentName string) []model.Message {
+	name := desc.GetName()
+	if parentName != "" {
+		name = parentName + "_" + name
+	}
+
+	var messages []model.Message
+	fields := make([]model.Field, len(desc.GetField()))
+	for f, field := range desc.Field {
+		fields[f] = model.NewField(
+			strings.Title(field.GetName()),
+			goType(field),
+			field.GetProto3Optional(),
+			field.GetType() == descriptorpb.FieldDescriptorProto_TYPE_MESSAGE,
+		)
+	}
+	messages = append(messages, model.NewMessage(name, fields...))
+
+	for _, nested := range desc.NestedType {
+		messages = append(messages, planMessage(nested, name)...)
+	}
+
+	return messages
 }
 
 func goType(field *descriptorpb.FieldDescriptorProto) string {
@@ -106,17 +128,18 @@ func goType(field *descriptorpb.FieldDescriptorProto) string {
 		out = "[]byte"
 	case descriptorpb.FieldDescriptorProto_TYPE_GROUP:
 		panic("unsupported!") // TODO error
-	case descriptorpb.FieldDescriptorProto_TYPE_MESSAGE:
-		out = field.GetTypeName() // TODO handle nested messages
-	case descriptorpb.FieldDescriptorProto_TYPE_ENUM:
-		out = strings.ReplaceAll(strings.TrimPrefix(field.GetTypeName(), "."), ".", "_")
+	case descriptorpb.FieldDescriptorProto_TYPE_MESSAGE, descriptorpb.FieldDescriptorProto_TYPE_ENUM:
+		out = formatNestedType(field.GetTypeName())
 	}
 
 	switch field.GetLabel() {
-	// TODO: test for this and test for optional as well
 	case descriptorpb.FieldDescriptorProto_LABEL_REPEATED:
 		return "[]" + out
 	}
 
 	return out
+}
+
+func formatNestedType(name string) string {
+	return strings.ReplaceAll(strings.TrimPrefix(name, "."), ".", "_")
 }

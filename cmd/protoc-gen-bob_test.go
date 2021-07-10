@@ -45,6 +45,10 @@ func TestProtocGenBobE2E(t *testing.T) {
 			test.AssertNoError(t, err)
 
 			if tc.expect != "" {
+				if test.IsUpdateFlagSet() {
+					test.UpdateTestData(t, tc.expect, test.MustReadFile(t, filepath.Join(tmp, tc.expect)))
+				}
+
 				expectFile := string(test.MustReadGoldenFile(t, tc.expect))
 				actualFile := string(test.MustReadFile(t, filepath.Join(tmp, tc.expect)))
 				if diff := cmp.Diff(expectFile, actualFile); diff != "" {
